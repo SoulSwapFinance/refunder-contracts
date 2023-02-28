@@ -73,7 +73,6 @@ contract Refunder is Ownable {
         IERC20 Pair = bond.pair;
 
         // [c] checks: availability & balances.
-        uint oldBalance = Asset.balanceOf(address(this));
         require(_checkAvailability(address(Asset), amount), 'unavailable');
         require(Asset.balanceOf(msg.sender) >= amount, 'insufficient balance');
 
@@ -81,10 +80,6 @@ contract Refunder is Ownable {
         Pair.safeTransferFrom(msg.sender, DAO, amount);
         // [i] sends: asset to sender.
         Asset.safeTransfer(msg.sender, amount);
-
-        // [e] validates: only the exact amount is withdrawn.
-        uint newBalance = Asset.balanceOf(address(this));
-        require(newBalance == oldBalance + amount, 'new balance is invalid'); 
 
         emit Refunded(address(Asset), msg.sender, amount);
     }

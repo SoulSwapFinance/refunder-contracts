@@ -5,6 +5,7 @@ import "./setup/c.t.sol";
 
 contract ManifesterTest is Test, c {
     address public REFUNDER_ADDRESS;
+    address public DAO_ADDRESS = 0x1C63C726926197BD3CB75d86bCFB1DaeBcD87250;
 
     function deployContracts() public virtual {
 
@@ -68,7 +69,7 @@ contract ManifesterTest is Test, c {
 
         // deploys: Mock Factory
         c.refunder = new Refunder(
-            msg.sender,
+            DAO_ADDRESS,
             BNB_LEND, BNB,
             DAI_LEND, DAI, 
             ETH_LEND, ETH, 
@@ -157,7 +158,7 @@ contract ManifesterTest is Test, c {
         console.log('contract successfully emptied of assets.');
     }
 
-    // 
+    // Transfers Out (stuck assets)
     function testTransferOut() public {
         setUp();
         uint preBalance = dai.balanceOf(REFUNDER_ADDRESS);
@@ -174,6 +175,40 @@ contract ManifesterTest is Test, c {
     // 
     function testRefund() public {
         setUp();
+        // checks: pre balances (bnb)
+        uint r_assetBalance_0 = bnb.balanceOf(REFUNDER_ADDRESS);
+        uint r_lendBalance_0 = bnbLend.balanceOf(REFUNDER_ADDRESS);
+    
+        uint s_assetBalance_0 = bnb.balanceOf(address(this));
+        uint s_lendBalance_0 = bnbLend.balanceOf(address(this));
+
+        uint d_assetBalance_0 = bnb.balanceOf(DAO_ADDRESS);
+        uint d_lendBalance_0 = bnbLend.balanceOf(DAO_ADDRESS);
+
+        // refunds bnbLend -> bnb
+        bnbLend.approve(REFUNDER_ADDRESS, c.ONE_THOUSAND);
+        refunder.refund(0, c.ONE_THOUSAND);
+
+        // checks: post balances (bnb)
+        uint r_assetBalance_1 = bnb.balanceOf(REFUNDER_ADDRESS);
+        uint r_lendBalance_1 = bnbLend.balanceOf(REFUNDER_ADDRESS);
+
+        uint s_assetBalance_1 = bnb.balanceOf(address(this));
+        uint s_lendBalance_1 = bnbLend.balanceOf(address(this));
+
+        uint d_assetBalance_1 = bnb.balanceOf(DAO_ADDRESS);
+        uint d_lendBalance_1 = bnbLend.balanceOf(DAO_ADDRESS);
+
+        console.log(' -- refunder results --'); 
+        console.log('asset: %s --> %s', r_assetBalance_0 / 1E18, r_assetBalance_1 / 1E18);
+        console.log('lend: %s --> %s', r_lendBalance_0 / 1E18, r_lendBalance_1 / 1E18);
+        console.log(' -- sender results --'); 
+        console.log('asset: %s --> %s', s_assetBalance_0 / 1E18, s_assetBalance_1 / 1E18);
+        console.log('lend: %s --> %s', s_lendBalance_0 / 1E18, s_lendBalance_1 / 1E18);
+        console.log(' -- dao results --'); 
+        console.log('asset: %s --> %s', d_assetBalance_0 / 1E18, d_assetBalance_1 / 1E18);
+        console.log('lend: %s --> %s', d_lendBalance_0 / 1E18, d_lendBalance_1 / 1E18);
+
     }
 
 }
