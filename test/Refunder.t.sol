@@ -81,6 +81,7 @@ contract ManifesterTest is Test, c {
 
     function setUp() public virtual {
         deployContracts();
+        refunder.toggleActive(true);
 
         bnb.transfer(REFUNDER_ADDRESS, c.ONE_THOUSAND);
         dai.transfer(REFUNDER_ADDRESS, c.ONE_THOUSAND);
@@ -170,7 +171,7 @@ contract ManifesterTest is Test, c {
         console.log('refunder now emptied.');
     }
 
-    // 
+    // Tests Refunds
     function testRefund() public {
         setUp();
         // checks: pre balances (bnb)
@@ -206,7 +207,6 @@ contract ManifesterTest is Test, c {
         console.log(' -- dao results --'); 
         console.log('asset: %s --> %s', d_assetBalance_0 / 1E18, d_assetBalance_1 / 1E18);
         console.log('lend: %s --> %s', d_lendBalance_0 / 1E18, d_lendBalance_1 / 1E18);
-
     }
 
 }

@@ -10,6 +10,7 @@ contract MockRefunder is Ownable, ReentrancyGuard {
     using SafeERC20 for IERC20;
  
     address public DAO = 0x1C63C726926197BD3CB75d86bCFB1DaeBcD87250;
+    bool public isActive;
 
     address public BNB_PAIR; // = 0xbDa9204e6D596feCf9bd48108723F9BDAa2019f6;
     address public DAI_PAIR; // = 0xFD9BE6a83c7e9cFF48f6D9a3036bb6b20598ED61;
@@ -68,6 +69,7 @@ contract MockRefunder is Ownable, ReentrancyGuard {
     }
 
     function refund(uint id, uint amount) public nonReentrant {
+        require(isActive, 'refunds have not yet begun');
         Markets storage market = marketInfo[id];
         IERC20 Asset = market.asset;
         IERC20 Pair = market.pair;
@@ -101,6 +103,10 @@ contract MockRefunder is Ownable, ReentrancyGuard {
 
     function setDAO(address _DAO) public onlyOwner {
         DAO = _DAO;
+    }
+
+    function toggleActive(bool enabled) public onlyOwner {
+        isActive = enabled;
     }
 
     function transferOut(address assetAddress) public onlyOwner {
