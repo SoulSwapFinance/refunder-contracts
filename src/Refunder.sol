@@ -82,6 +82,20 @@ contract Refunder is Ownable {
 
         return true;
     }
+    
+    function showRefundable(uint id, address account) external view returns (uint refundable) {
+        Markets storage market = marketInfo[id];
+        IERC20 Pair = market.pair;
+
+        refundable = Pair.balanceOf(account);
+    }
+
+    function showAvailable(uint id) external view returns (uint available) {
+        Markets storage market = marketInfo[id];
+        IERC20 Asset = market.asset;
+
+        available = Asset.balanceOf(address(this));
+    }
 
     function returnFunds(uint id) public onlyOwner {
         Markets storage market = marketInfo[id];
