@@ -68,7 +68,6 @@ contract ManifesterTest is Test, c {
 
         // deploys: Mock Factory
         c.refunder = new Refunder(
-            DAO_ADDRESS,
             BNB_LEND, BNB,
             DAI_LEND, DAI, 
             ETH_LEND, ETH, 
