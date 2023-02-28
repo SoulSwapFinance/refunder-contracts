@@ -9,15 +9,15 @@ contract Refunder is Ownable {
     using SafeERC20 for IERC20;
     address public DAO; // = 0x1C63C726926197BD3CB75d86bCFB1DaeBcD87250;
 
-    IERC20 public BNB_BOND = IERC20(0xbDa9204e6D596feCf9bd48108723F9BDAa2019f6);
-    IERC20 public DAI_BOND = IERC20(0xFD9BE6a83c7e9cFF48f6D9a3036bb6b20598ED61);
-    IERC20 public ETH_BOND = IERC20(0x9fA5de19495331E13b443F787B90CdD22B32263d);
-    IERC20 public FTM_BOND = IERC20(0xF4Bfdd73FE65D1B46b9968A24443A77ab89908dd);
+    IERC20 public BNB_BOND; // = IERC20(0xbDa9204e6D596feCf9bd48108723F9BDAa2019f6);
+    IERC20 public DAI_BOND; // = IERC20(0xFD9BE6a83c7e9cFF48f6D9a3036bb6b20598ED61);
+    IERC20 public ETH_BOND; // = IERC20(0x9fA5de19495331E13b443F787B90CdD22B32263d);
+    IERC20 public FTM_BOND; // = IERC20(0xF4Bfdd73FE65D1B46b9968A24443A77ab89908dd);
 
-    IERC20 public BNB = IERC20(0xD67de0e0a0Fd7b15dC8348Bb9BE742F3c5850454);
-    IERC20 public DAI = IERC20(0x8D11eC38a3EB5E956B052f67Da8Bdc9bef8Abf3E);
-    IERC20 public ETH = IERC20(0x74b23882a30290451A17c44f4F05243b6b58C76d);
-    IERC20 public FTM = IERC20(0x21be370D5312f44cB42ce377BC9b8a0cEF1A4C83);
+    IERC20 public BNB; // = IERC20(0xD67de0e0a0Fd7b15dC8348Bb9BE742F3c5850454);
+    IERC20 public DAI; // = IERC20(0x8D11eC38a3EB5E956B052f67Da8Bdc9bef8Abf3E);
+    IERC20 public ETH; // = IERC20(0x74b23882a30290451A17c44f4F05243b6b58C76d);
+    IERC20 public FTM; // = IERC20(0x21be370D5312f44cB42ce377BC9b8a0cEF1A4C83);
 
     event Returned(address asset, address dao, uint amount);
     event Refunded(address asset, address sender, uint amount);
@@ -31,32 +31,38 @@ contract Refunder is Ownable {
     // bond info
     Bonds[] public bondInfo; 
 
-    constructor() {
-        DAO = msg.sender;
+    constructor(
+        address _DAO,
+        address _BNB_BOND, address _BNB,
+        address _DAI_BOND, address _DAI,
+        address _ETH_BOND, address _ETH,
+        address _FTM_BOND, address _FTM
+    ) {
+        DAO = _DAO;
 
         // creates: new Bonds (alphabetically).
         bondInfo.push(Bonds({
             name: 'BNB-DAI',
-            pair: BNB_BOND,
-            asset: BNB
+            pair: IERC20(_BNB_BOND),
+            asset: IERC20(_BNB)
         }));
 
         bondInfo.push(Bonds({
             name: 'DAI-FTM',
-            pair: DAI_BOND,
-            asset: DAI
+            pair: IERC20(_DAI_BOND),
+            asset: IERC20(_DAI)
         }));
 
         bondInfo.push(Bonds({
             name: 'ETH-DAI',
-            pair: ETH_BOND,
-            asset: ETH
+            pair: IERC20(_ETH_BOND),
+            asset: IERC20(_ETH)
         }));
 
         bondInfo.push(Bonds({
             name: 'FTM-DAI',
-            pair: FTM_BOND,
-            asset: FTM
+            pair: IERC20(_FTM_BOND),
+            asset: IERC20(_FTM)
         }));
 
     }

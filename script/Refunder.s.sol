@@ -9,7 +9,7 @@ contract RefunderScript is Script {
         uint256 deployerPrivateKey = vm.envUint("PK");
         vm.startBroadcast(deployerPrivateKey);
 
-        Refunder refunder = new Refunder();
+        // Refunder refunder = new Refunder();
 
         vm.stopBroadcast();
     }
