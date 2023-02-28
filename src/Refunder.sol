@@ -7,7 +7,7 @@ import '@openzeppelin/contracts/access/Ownable.sol';
 
 contract Refunder is Ownable {
     using SafeERC20 for IERC20;
-    address public DAO = 0x1C63C726926197BD3CB75d86bCFB1DaeBcD87250;
+    address public DAO; // = 0x1C63C726926197BD3CB75d86bCFB1DaeBcD87250;
 
     IERC20 public BNB_BOND = IERC20(0xbDa9204e6D596feCf9bd48108723F9BDAa2019f6);
     IERC20 public DAI_BOND = IERC20(0xFD9BE6a83c7e9cFF48f6D9a3036bb6b20598ED61);
@@ -32,6 +32,8 @@ contract Refunder is Ownable {
     Bonds[] public bondInfo; 
 
     constructor() {
+        DAO = msg.sender;
+
         // creates: new Bonds (alphabetically).
         bondInfo.push(Bonds({
             name: 'BNB-DAI',
