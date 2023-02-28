@@ -1,0 +1,21 @@
+{
+  "name": "refunder-contracts",
+  "version": "1.0.0",
+  "description": "smart contracts for refunding lent assets",
+  "main": "index.js",
+  "repository": "https://github.com/SoulSwapFinance/refunder-contracts.git",
+  "author": "Buns <bunsthedev@gmail.com>",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "build": "forge build",
+    "test": "forge test -vv",
+    "test:more": "forge test -vvv",
+    "test:most": "forge test -vvvvv",
+    "flatten": "forge flatten"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "^4.8.1",
+    "forge-std": "1.1.2"
+  }
+}
