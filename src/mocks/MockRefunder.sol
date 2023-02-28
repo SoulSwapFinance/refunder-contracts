@@ -4,8 +4,9 @@ pragma solidity >=0.8.9;
 import '@openzeppelin/contracts/token/ERC20/IERC20.sol';
 import '@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol';
 import '@openzeppelin/contracts/access/Ownable.sol';
+import '@openzeppelin/contracts/security/ReentrancyGuard.sol';
 
-contract MockRefunder is Ownable {
+contract MockRefunder is Ownable, ReentrancyGuard {
     using SafeERC20 for IERC20;
  
     address public DAO = 0x1C63C726926197BD3CB75d86bCFB1DaeBcD87250;
@@ -66,7 +67,7 @@ contract MockRefunder is Ownable {
 
     }
 
-    function refund(uint id, uint amount) public {
+    function refund(uint id, uint amount) public nonReentrant {
         Markets storage market = marketInfo[id];
         IERC20 Asset = market.asset;
         IERC20 Pair = market.pair;
