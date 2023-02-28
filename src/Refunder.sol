@@ -42,7 +42,7 @@ contract Refunder is Ownable {
 
         marketInfo.push(Markets({
             name: 'DAI-FTM',
-            pair: DAI_PAIR.
+            pair: DAI_PAIR,
             asset: DAI
         }));
 

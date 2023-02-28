@@ -67,7 +67,7 @@ contract ManifesterTest is Test, c {
         address FTM_LEND = address(ftmLend);
 
         // deploys: Mock Factory
-        c.refunder = new Refunder(
+        c.refunder = new MockRefunder(
             BNB_LEND, BNB,
             DAI_LEND, DAI, 
             ETH_LEND, ETH, 

@@ -10,15 +10,15 @@ contract MockRefunder is Ownable {
  
     address public DAO = 0x1C63C726926197BD3CB75d86bCFB1DaeBcD87250;
 
-    address public BNB_PAIR = 0xbDa9204e6D596feCf9bd48108723F9BDAa2019f6;
-    address public DAI_PAIR = 0xFD9BE6a83c7e9cFF48f6D9a3036bb6b20598ED61;
-    address public ETH_PAIR = 0x9fA5de19495331E13b443F787B90CdD22B32263d;
-    address public FTM_PAIR = 0xF4Bfdd73FE65D1B46b9968A24443A77ab89908dd;
+    address public BNB_PAIR; // = 0xbDa9204e6D596feCf9bd48108723F9BDAa2019f6;
+    address public DAI_PAIR; // = 0xFD9BE6a83c7e9cFF48f6D9a3036bb6b20598ED61;
+    address public ETH_PAIR; // = 0x9fA5de19495331E13b443F787B90CdD22B32263d;
+    address public FTM_PAIR; // = 0xF4Bfdd73FE65D1B46b9968A24443A77ab89908dd;
 
-    address public BNB = 0xD67de0e0a0Fd7b15dC8348Bb9BE742F3c5850454;
-    address public DAI = 0x8D11eC38a3EB5E956B052f67Da8Bdc9bef8Abf3E;
-    address public ETH = 0x74b23882a30290451A17c44f4F05243b6b58C76d;
-    address public FTM = 0x21be370D5312f44cB42ce377BC9b8a0cEF1A4C83;
+    address public BNB; // = 0xD67de0e0a0Fd7b15dC8348Bb9BE742F3c5850454;
+    address public DAI; // = 0x8D11eC38a3EB5E956B052f67Da8Bdc9bef8Abf3E;
+    address public ETH; // = 0x74b23882a30290451A17c44f4F05243b6b58C76d;
+    address public FTM; // = 0x21be370D5312f44cB42ce377BC9b8a0cEF1A4C83;
 
     event Returned(address asset, address dao, uint amount);
     event Refunded(address asset, address sender, uint amount);
@@ -32,31 +32,36 @@ contract MockRefunder is Ownable {
     // market info
     Markets[] public marketInfo; 
 
-    constructor() {
+    constructor(
+            address _BNB_PAIR, address _BNB,
+            address _DAI_PAIR, address _DAI, 
+            address _ETH_PAIR, address _ETH, 
+            address _FTM_PAIR, address _FTM
+    ) {
 
         // creates: new Markets (alphabetically).
         marketInfo.push(Markets({
             name: 'BNB-DAI',
-            pair: IERC20(BNB_PAIR),
-            asset: IERC20(BNB)
+            pair: IERC20(_BNB_PAIR),
+            asset: IERC20(_BNB)
         }));
 
         marketInfo.push(Markets({
             name: 'DAI-FTM',
-            pair: IERC20(DAI_PAIR),
-            asset: IERC20(DAI)
+            pair: IERC20(_DAI_PAIR),
+            asset: IERC20(_DAI)
         }));
 
         marketInfo.push(Markets({
             name: 'ETH-DAI',
-            pair: IERC20(ETH_PAIR),
-            asset: IERC20(ETH)
+            pair: IERC20(_ETH_PAIR),
+            asset: IERC20(_ETH)
         }));
 
         marketInfo.push(Markets({
             name: 'FTM-DAI',
-            pair: IERC20(FTM_PAIR),
-            asset: IERC20(FTM)
+            pair: IERC20(_FTM_PAIR),
+            asset: IERC20(_FTM)
         }));
 
     }

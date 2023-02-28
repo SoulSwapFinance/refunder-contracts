@@ -592,7 +592,6 @@ abstract contract Ownable is Context {
     }
 }
 
-
 contract Refunder is Ownable {
     using SafeERC20 for IERC20;
     address public DAO = 0x1C63C726926197BD3CB75d86bCFB1DaeBcD87250;
@@ -630,7 +629,7 @@ contract Refunder is Ownable {
 
         marketInfo.push(Markets({
             name: 'DAI-FTM',
-            pair: DAI_PAIR.
+            pair: DAI_PAIR,
             asset: DAI
         }));
 
