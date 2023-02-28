@@ -6,3 +6,12 @@ libs = ['lib']
 gas_reports = ["*"]
 optimizer = true
 optimizer_runs = 20000
+
+[profile.private_key]
+pk = "${PK}"
+
+[rpc_endpoints]
+fantom = "${RPC_URL}"
+
+[etherscan]
+fantom = { key = "${ETHERSCAN_API_KEY}" }

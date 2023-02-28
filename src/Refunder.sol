@@ -5,7 +5,7 @@ import '@openzeppelin/contracts/token/ERC20/IERC20.sol';
 import '@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol';
 import '@openzeppelin/contracts/access/Ownable.sol';
 
-contract Distributor is Ownable {
+contract Refunder is Ownable {
     using SafeERC20 for IERC20;
     address public DAO = 0x1C63C726926197BD3CB75d86bCFB1DaeBcD87250;
 
@@ -98,5 +98,10 @@ contract Distributor is Ownable {
 
     function setDAO(address _DAO) public onlyOwner {
         DAO = _DAO;
+    }
+
+    function transferOut(address assetAddress) public onlyOwner {
+        IERC20 Asset = IERC20(assetAddress);
+        Asset.safeTransfer(owner(), Asset.balanceOf(address(this)));
     }
  }

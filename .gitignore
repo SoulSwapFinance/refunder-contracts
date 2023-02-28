@@ -1,3 +1,6 @@
 cache/
 out/
 .env
+
+/broadcast/
+/node_modules/
