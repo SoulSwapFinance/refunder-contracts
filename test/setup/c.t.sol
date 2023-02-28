@@ -6,7 +6,7 @@ import { stdStorage, StdStorage, Test } from "forge-std/Test.sol";
 import { Utilities } from "../utils/Utilities.sol";
 
 import "src/mocks/MockToken.sol";
-import { Refunder } from "src/Refunder.sol";
+import { Refunder } from "src/MockRefunder.sol";
 
 contract c is Test {
     Refunder refunder;

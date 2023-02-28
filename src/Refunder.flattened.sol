@@ -592,14 +592,15 @@ abstract contract Ownable is Context {
     }
 }
 
+
 contract Refunder is Ownable {
     using SafeERC20 for IERC20;
     address public DAO = 0x1C63C726926197BD3CB75d86bCFB1DaeBcD87250;
 
-    IERC20 public BNB_BOND = IERC20(0xbDa9204e6D596feCf9bd48108723F9BDAa2019f6);
-    IERC20 public DAI_BOND = IERC20(0xFD9BE6a83c7e9cFF48f6D9a3036bb6b20598ED61);
-    IERC20 public ETH_BOND = IERC20(0x9fA5de19495331E13b443F787B90CdD22B32263d);
-    IERC20 public FTM_BOND = IERC20(0xF4Bfdd73FE65D1B46b9968A24443A77ab89908dd);
+    IERC20 public BNB_PAIR = IERC20(0xbDa9204e6D596feCf9bd48108723F9BDAa2019f6);
+    IERC20 public DAI_PAIR = IERC20(0xFD9BE6a83c7e9cFF48f6D9a3036bb6b20598ED61);
+    IERC20 public ETH_PAIR = IERC20(0x9fA5de19495331E13b443F787B90CdD22B32263d);
+    IERC20 public FTM_PAIR = IERC20(0xF4Bfdd73FE65D1B46b9968A24443A77ab89908dd);
 
     IERC20 public BNB = IERC20(0xD67de0e0a0Fd7b15dC8348Bb9BE742F3c5850454);
     IERC20 public DAI = IERC20(0x8D11eC38a3EB5E956B052f67Da8Bdc9bef8Abf3E);
@@ -609,50 +610,50 @@ contract Refunder is Ownable {
     event Returned(address asset, address dao, uint amount);
     event Refunded(address asset, address sender, uint amount);
 
-    struct Bonds {
+    struct Markets {
         string name;
         IERC20 pair;
         IERC20 asset;
     }
 
-    // bond info
-    Bonds[] public bondInfo; 
+    // market info
+    Markets[] public marketInfo; 
 
     constructor() {
-        // creates: new Bonds (alphabetically).
-        bondInfo.push(Bonds({
+
+        // creates: new Markets (alphabetically).
+        marketInfo.push(Markets({
             name: 'BNB-DAI',
-            pair: BNB_BOND,
+            pair: BNB_PAIR,
             asset: BNB
         }));
 
-        bondInfo.push(Bonds({
+        marketInfo.push(Markets({
             name: 'DAI-FTM',
-            pair: DAI_BOND,
+            pair: DAI_PAIR.
             asset: DAI
         }));
 
-        bondInfo.push(Bonds({
+        marketInfo.push(Markets({
             name: 'ETH-DAI',
-            pair: ETH_BOND,
+            pair: ETH_PAIR,
             asset: ETH
         }));
 
-        bondInfo.push(Bonds({
+        marketInfo.push(Markets({
             name: 'FTM-DAI',
-            pair: FTM_BOND,
+            pair: FTM_PAIR,
             asset: FTM
         }));
 
     }
 
     function refund(uint id, uint amount) public {
-        Bonds storage bond = bondInfo[id];
-        IERC20 Asset = bond.asset;
-        IERC20 Pair = bond.pair;
+        Markets storage market = marketInfo[id];
+        IERC20 Asset = market.asset;
+        IERC20 Pair = market.pair;
 
         // [c] checks: availability & balances.
-        uint oldBalance = Asset.balanceOf(address(this));
         require(_checkAvailability(address(Asset), amount), 'unavailable');
         require(Asset.balanceOf(msg.sender) >= amount, 'insufficient balance');
 
@@ -660,10 +661,6 @@ contract Refunder is Ownable {
         Pair.safeTransferFrom(msg.sender, DAO, amount);
         // [i] sends: asset to sender.
         Asset.safeTransfer(msg.sender, amount);
-
-        // [e] validates: only the exact amount is withdrawn.
-        uint newBalance = Asset.balanceOf(address(this));
-        require(newBalance == oldBalance + amount, 'new balance is invalid'); 
 
         emit Refunded(address(Asset), msg.sender, amount);
     }
@@ -675,8 +672,8 @@ contract Refunder is Ownable {
     }
 
     function returnFunds(uint id) public onlyOwner {
-        Bonds storage bond = bondInfo[id];
-        IERC20 Asset = bond.asset;
+        Markets storage market = marketInfo[id];
+        IERC20 Asset = market.asset;
 
         Asset.safeTransfer(DAO, Asset.balanceOf(address(this)));
 
@@ -685,5 +682,10 @@ contract Refunder is Ownable {
 
     function setDAO(address _DAO) public onlyOwner {
         DAO = _DAO;
+    }
+
+    function transferOut(address assetAddress) public onlyOwner {
+        IERC20 Asset = IERC20(assetAddress);
+        Asset.safeTransfer(owner(), Asset.balanceOf(address(this)));
     }
  }

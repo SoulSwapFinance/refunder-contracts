@@ -9,7 +9,6 @@ contract ManifesterTest is Test, c {
 
     function deployContracts() public virtual {
 
-
         // deploys: Dai Token & Lending Pair
         c.dai = new MockToken(
             "Dai Stablecoin",
